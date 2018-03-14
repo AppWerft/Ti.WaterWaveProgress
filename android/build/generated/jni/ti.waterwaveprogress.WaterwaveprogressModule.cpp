@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2011-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2011-2017 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
@@ -10,11 +10,8 @@
 #include "ti.waterwaveprogress.WaterwaveprogressModule.h"
 
 #include "AndroidUtil.h"
-#include "EventEmitter.h"
 #include "JNIUtil.h"
 #include "JSException.h"
-#include "Proxy.h"
-#include "ProxyFactory.h"
 #include "TypeConverter.h"
 #include "V8Util.h"
 
@@ -28,70 +25,77 @@
 
 using namespace v8;
 
-		namespace ti {
-		namespace waterwaveprogress {
+namespace ti {
+namespace waterwaveprogress {
 
 
-Persistent<FunctionTemplate> WaterwaveprogressModule::proxyTemplate = Persistent<FunctionTemplate>();
+Persistent<FunctionTemplate> WaterwaveprogressModule::proxyTemplate;
 jclass WaterwaveprogressModule::javaClass = NULL;
 
-WaterwaveprogressModule::WaterwaveprogressModule(jobject javaObject) : titanium::Proxy(javaObject)
+WaterwaveprogressModule::WaterwaveprogressModule() : titanium::Proxy()
 {
 }
 
-void WaterwaveprogressModule::bindProxy(Handle<Object> exports)
+void WaterwaveprogressModule::bindProxy(Local<Object> exports, Local<Context> context)
 {
-	if (proxyTemplate.IsEmpty()) {
-		getProxyTemplate();
+	Isolate* isolate = context->GetIsolate();
+
+	Local<FunctionTemplate> pt = getProxyTemplate(isolate);
+
+	v8::TryCatch tryCatch(isolate);
+	Local<Function> constructor;
+	MaybeLocal<Function> maybeConstructor = pt->GetFunction(context);
+	if (!maybeConstructor.ToLocal(&constructor)) {
+		titanium::V8Util::fatalException(isolate, tryCatch);
+		return;
 	}
 
-	// use symbol over string for efficiency
-	Handle<String> nameSymbol = String::NewSymbol("Waterwaveprogress");
-
-	Local<Function> proxyConstructor = proxyTemplate->GetFunction();
-	Local<Object> moduleInstance = proxyConstructor->NewInstance();
+	Local<String> nameSymbol = NEW_SYMBOL(isolate, "Waterwaveprogress"); // use symbol over string for efficiency
+	MaybeLocal<Object> maybeInstance = constructor->NewInstance(context);
+	Local<Object> moduleInstance;
+	if (!maybeInstance.ToLocal(&moduleInstance)) {
+		titanium::V8Util::fatalException(isolate, tryCatch);
+		return;
+	}
 	exports->Set(nameSymbol, moduleInstance);
 }
 
-void WaterwaveprogressModule::dispose()
+void WaterwaveprogressModule::dispose(Isolate* isolate)
 {
 	LOGD(TAG, "dispose()");
 	if (!proxyTemplate.IsEmpty()) {
-		proxyTemplate.Dispose();
-		proxyTemplate = Persistent<FunctionTemplate>();
+		proxyTemplate.Reset();
 	}
 
-	titanium::KrollModule::dispose();
+	titanium::KrollModule::dispose(isolate);
 }
 
-Handle<FunctionTemplate> WaterwaveprogressModule::getProxyTemplate()
+Local<FunctionTemplate> WaterwaveprogressModule::getProxyTemplate(Isolate* isolate)
 {
 	if (!proxyTemplate.IsEmpty()) {
-		return proxyTemplate;
+		return proxyTemplate.Get(isolate);
 	}
 
-	LOGD(TAG, "GetProxyTemplate");
+	LOGD(TAG, "WaterwaveprogressModule::getProxyTemplate()");
 
 	javaClass = titanium::JNIUtil::findClass("ti/waterwaveprogress/WaterwaveprogressModule");
-	HandleScope scope;
+	EscapableHandleScope scope(isolate);
 
 	// use symbol over string for efficiency
-	Handle<String> nameSymbol = String::NewSymbol("Waterwaveprogress");
+	Local<String> nameSymbol = NEW_SYMBOL(isolate, "Waterwaveprogress");
 
-	Handle<FunctionTemplate> t = titanium::Proxy::inheritProxyTemplate(
-		titanium::KrollModule::getProxyTemplate()
+	Local<FunctionTemplate> t = titanium::Proxy::inheritProxyTemplate(isolate,
+		titanium::KrollModule::getProxyTemplate(isolate)
 , javaClass, nameSymbol);
 
-	proxyTemplate = Persistent<FunctionTemplate>::New(t);
-	proxyTemplate->Set(titanium::Proxy::inheritSymbol,
-		FunctionTemplate::New(titanium::Proxy::inherit<WaterwaveprogressModule>)->GetFunction());
-
-	titanium::ProxyFactory::registerProxyPair(javaClass, *proxyTemplate);
+	proxyTemplate.Reset(isolate, t);
+	t->Set(titanium::Proxy::inheritSymbol.Get(isolate),
+		FunctionTemplate::New(isolate, titanium::Proxy::inherit<WaterwaveprogressModule>));
 
 	// Method bindings --------------------------------------------------------
 
-	Local<ObjectTemplate> prototypeTemplate = proxyTemplate->PrototypeTemplate();
-	Local<ObjectTemplate> instanceTemplate = proxyTemplate->InstanceTemplate();
+	Local<ObjectTemplate> prototypeTemplate = t->PrototypeTemplate();
+	Local<ObjectTemplate> instanceTemplate = t->InstanceTemplate();
 
 	// Delegate indexed property get and set to the Java proxy.
 	instanceTemplate->SetIndexedPropertyHandler(titanium::Proxy::getIndexedProperty,
@@ -103,7 +107,7 @@ Handle<FunctionTemplate> WaterwaveprogressModule::getProxyTemplate()
 
 	// Accessors --------------------------------------------------------------
 
-	return proxyTemplate;
+	return scope.Escape(t);
 }
 
 // Methods --------------------------------------------------------------------
@@ -111,5 +115,5 @@ Handle<FunctionTemplate> WaterwaveprogressModule::getProxyTemplate()
 // Dynamic property accessors -------------------------------------------------
 
 
-		} // waterwaveprogress
-		} // ti
+} // waterwaveprogress
+} // ti

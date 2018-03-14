@@ -1,6 +1,6 @@
 /**
  * Appcelerator Titanium Mobile
- * Copyright (c) 2011-2013 by Appcelerator, Inc. All Rights Reserved.
+ * Copyright (c) 2011-2017 by Appcelerator, Inc. All Rights Reserved.
  * Licensed under the terms of the Apache Public License
  * Please see the LICENSE included with this distribution for details.
  */
@@ -10,11 +10,8 @@
 #include "ti.waterwaveprogress.ViewProxy.h"
 
 #include "AndroidUtil.h"
-#include "EventEmitter.h"
 #include "JNIUtil.h"
 #include "JSException.h"
-#include "Proxy.h"
-#include "ProxyFactory.h"
 #include "TypeConverter.h"
 #include "V8Util.h"
 
@@ -25,80 +22,82 @@
 
 using namespace v8;
 
-		namespace ti {
-		namespace waterwaveprogress {
-			namespace waterwaveprogress {
+namespace ti {
+namespace waterwaveprogress {
+	namespace waterwaveprogress {
 
 
-Persistent<FunctionTemplate> ViewProxy::proxyTemplate = Persistent<FunctionTemplate>();
+Persistent<FunctionTemplate> ViewProxy::proxyTemplate;
 jclass ViewProxy::javaClass = NULL;
 
-ViewProxy::ViewProxy(jobject javaObject) : titanium::Proxy(javaObject)
+ViewProxy::ViewProxy() : titanium::Proxy()
 {
 }
 
-void ViewProxy::bindProxy(Handle<Object> exports)
+void ViewProxy::bindProxy(Local<Object> exports, Local<Context> context)
 {
-	if (proxyTemplate.IsEmpty()) {
-		getProxyTemplate();
+	Isolate* isolate = context->GetIsolate();
+
+	Local<FunctionTemplate> pt = getProxyTemplate(isolate);
+
+	v8::TryCatch tryCatch(isolate);
+	Local<Function> constructor;
+	MaybeLocal<Function> maybeConstructor = pt->GetFunction(context);
+	if (!maybeConstructor.ToLocal(&constructor)) {
+		titanium::V8Util::fatalException(isolate, tryCatch);
+		return;
 	}
 
-	// use symbol over string for efficiency
-	Handle<String> nameSymbol = String::NewSymbol("View");
-
-	Local<Function> proxyConstructor = proxyTemplate->GetFunction();
-	exports->Set(nameSymbol, proxyConstructor);
+	Local<String> nameSymbol = NEW_SYMBOL(isolate, "View"); // use symbol over string for efficiency
+	exports->Set(nameSymbol, constructor);
 }
 
-void ViewProxy::dispose()
+void ViewProxy::dispose(Isolate* isolate)
 {
 	LOGD(TAG, "dispose()");
 	if (!proxyTemplate.IsEmpty()) {
-		proxyTemplate.Dispose();
-		proxyTemplate = Persistent<FunctionTemplate>();
+		proxyTemplate.Reset();
 	}
 
-	titanium::TiViewProxy::dispose();
+	titanium::TiViewProxy::dispose(isolate);
 }
 
-Handle<FunctionTemplate> ViewProxy::getProxyTemplate()
+Local<FunctionTemplate> ViewProxy::getProxyTemplate(Isolate* isolate)
 {
 	if (!proxyTemplate.IsEmpty()) {
-		return proxyTemplate;
+		return proxyTemplate.Get(isolate);
 	}
 
-	LOGD(TAG, "GetProxyTemplate");
+	LOGD(TAG, "ViewProxy::getProxyTemplate()");
 
 	javaClass = titanium::JNIUtil::findClass("ti/waterwaveprogress/ViewProxy");
-	HandleScope scope;
+	EscapableHandleScope scope(isolate);
 
 	// use symbol over string for efficiency
-	Handle<String> nameSymbol = String::NewSymbol("View");
+	Local<String> nameSymbol = NEW_SYMBOL(isolate, "View");
 
-	Handle<FunctionTemplate> t = titanium::Proxy::inheritProxyTemplate(
-		titanium::TiViewProxy::getProxyTemplate()
+	Local<FunctionTemplate> t = titanium::Proxy::inheritProxyTemplate(isolate,
+		titanium::TiViewProxy::getProxyTemplate(isolate)
 , javaClass, nameSymbol);
 
-	proxyTemplate = Persistent<FunctionTemplate>::New(t);
-	proxyTemplate->Set(titanium::Proxy::inheritSymbol,
-		FunctionTemplate::New(titanium::Proxy::inherit<ViewProxy>)->GetFunction());
-
-	titanium::ProxyFactory::registerProxyPair(javaClass, *proxyTemplate);
+	proxyTemplate.Reset(isolate, t);
+	t->Set(titanium::Proxy::inheritSymbol.Get(isolate),
+		FunctionTemplate::New(isolate, titanium::Proxy::inherit<ViewProxy>));
 
 	// Method bindings --------------------------------------------------------
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "hideRing", ViewProxy::hideRing);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "showRing", ViewProxy::showRing);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "setAmplitude", ViewProxy::setAmplitude);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "hideNumerical", ViewProxy::hideNumerical);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "showNumerical", ViewProxy::showNumerical);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "setCrestCount", ViewProxy::setCrestCount);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "setRingWidth", ViewProxy::setRingWidth);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "setProgress", ViewProxy::setProgress);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "setWaterAlpha", ViewProxy::setWaterAlpha);
-	DEFINE_PROTOTYPE_METHOD(proxyTemplate, "setWaveSpeed", ViewProxy::setWaveSpeed);
+	titanium::SetProtoMethod(isolate, t, "hideRing", ViewProxy::hideRing);
+	titanium::SetProtoMethod(isolate, t, "showRing", ViewProxy::showRing);
+	titanium::SetProtoMethod(isolate, t, "setAmplitude", ViewProxy::setAmplitude);
+	titanium::SetProtoMethod(isolate, t, "hideNumerical", ViewProxy::hideNumerical);
+	titanium::SetProtoMethod(isolate, t, "showNumerical", ViewProxy::showNumerical);
+	titanium::SetProtoMethod(isolate, t, "setCrestCount", ViewProxy::setCrestCount);
+	titanium::SetProtoMethod(isolate, t, "setRingWidth", ViewProxy::setRingWidth);
+	titanium::SetProtoMethod(isolate, t, "setProgress", ViewProxy::setProgress);
+	titanium::SetProtoMethod(isolate, t, "setWaterAlpha", ViewProxy::setWaterAlpha);
+	titanium::SetProtoMethod(isolate, t, "setWaveSpeed", ViewProxy::setWaveSpeed);
 
-	Local<ObjectTemplate> prototypeTemplate = proxyTemplate->PrototypeTemplate();
-	Local<ObjectTemplate> instanceTemplate = proxyTemplate->InstanceTemplate();
+	Local<ObjectTemplate> prototypeTemplate = t->PrototypeTemplate();
+	Local<ObjectTemplate> instanceTemplate = t->InstanceTemplate();
 
 	// Delegate indexed property get and set to the Java proxy.
 	instanceTemplate->SetIndexedPropertyHandler(titanium::Proxy::getIndexedProperty,
@@ -107,25 +106,29 @@ Handle<FunctionTemplate> ViewProxy::getProxyTemplate()
 	// Constants --------------------------------------------------------------
 
 	// Dynamic properties -----------------------------------------------------
-	instanceTemplate->SetAccessor(String::NewSymbol("progress"),
-			titanium::Proxy::getProperty
-			, ViewProxy::setter_progress
-, Handle<Value>(), DEFAULT);
+	instanceTemplate->SetAccessor(NEW_SYMBOL(isolate, "progress"),
+			titanium::Proxy::getProperty,
+			ViewProxy::setter_progress,
+			Local<Value>(), DEFAULT,
+			static_cast<v8::PropertyAttribute>(v8::DontDelete)
+		);
 
 	// Accessors --------------------------------------------------------------
 
-	return proxyTemplate;
+	return scope.Escape(t);
 }
 
 // Methods --------------------------------------------------------------------
-Handle<Value> ViewProxy::hideRing(const Arguments& args)
+void ViewProxy::hideRing(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "hideRing()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -133,42 +136,49 @@ Handle<Value> ViewProxy::hideRing(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'hideRing' with signature '()V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::showRing(const Arguments& args)
+void ViewProxy::showRing(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "showRing()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -176,42 +186,49 @@ Handle<Value> ViewProxy::showRing(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'showRing' with signature '()V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::setAmplitude(const Arguments& args)
+void ViewProxy::setAmplitude(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "setAmplitude()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -219,16 +236,24 @@ Handle<Value> ViewProxy::setAmplitude(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'setAmplitude' with signature '(F)V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	if (args.Length() < 1) {
 		char errorStringBuffer[100];
 		sprintf(errorStringBuffer, "setAmplitude: Invalid number of arguments. Expected 1 but got %d", args.Length());
-		return ThrowException(Exception::Error(String::New(errorStringBuffer)));
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
 	}
 
 	jvalue jArguments[1];
@@ -237,16 +262,18 @@ Handle<Value> ViewProxy::setAmplitude(const Arguments& args)
 
 
 	
-	
-		if ((titanium::V8Util::isNaN(args[0]) && !args[0]->IsUndefined()) || args[0]->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, args[0]) && !args[0]->IsUndefined()) || args[0]->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
-			return titanium::JSException::Error(error);
+			titanium::JSException::Error(isolate, error);
+			return;
 		}
 	if (!args[0]->IsNull()) {
-		Local<Number> arg_0 = args[0]->ToNumber();
+		Local<Number> arg_0 = args[0]->ToNumber(isolate);
 		jArguments[0].f =
-			titanium::TypeConverter::jsNumberToJavaFloat(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaFloat(
+				env, arg_0);
 	} else {
 		jArguments[0].f = NULL;
 	}
@@ -254,31 +281,31 @@ Handle<Value> ViewProxy::setAmplitude(const Arguments& args)
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::hideNumerical(const Arguments& args)
+void ViewProxy::hideNumerical(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "hideNumerical()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -286,42 +313,49 @@ Handle<Value> ViewProxy::hideNumerical(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'hideNumerical' with signature '()V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::showNumerical(const Arguments& args)
+void ViewProxy::showNumerical(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "showNumerical()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -329,42 +363,49 @@ Handle<Value> ViewProxy::showNumerical(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'showNumerical' with signature '()V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::setCrestCount(const Arguments& args)
+void ViewProxy::setCrestCount(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "setCrestCount()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -372,16 +413,24 @@ Handle<Value> ViewProxy::setCrestCount(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'setCrestCount' with signature '(F)V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	if (args.Length() < 1) {
 		char errorStringBuffer[100];
 		sprintf(errorStringBuffer, "setCrestCount: Invalid number of arguments. Expected 1 but got %d", args.Length());
-		return ThrowException(Exception::Error(String::New(errorStringBuffer)));
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
 	}
 
 	jvalue jArguments[1];
@@ -390,16 +439,18 @@ Handle<Value> ViewProxy::setCrestCount(const Arguments& args)
 
 
 	
-	
-		if ((titanium::V8Util::isNaN(args[0]) && !args[0]->IsUndefined()) || args[0]->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, args[0]) && !args[0]->IsUndefined()) || args[0]->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
-			return titanium::JSException::Error(error);
+			titanium::JSException::Error(isolate, error);
+			return;
 		}
 	if (!args[0]->IsNull()) {
-		Local<Number> arg_0 = args[0]->ToNumber();
+		Local<Number> arg_0 = args[0]->ToNumber(isolate);
 		jArguments[0].f =
-			titanium::TypeConverter::jsNumberToJavaFloat(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaFloat(
+				env, arg_0);
 	} else {
 		jArguments[0].f = NULL;
 	}
@@ -407,31 +458,31 @@ Handle<Value> ViewProxy::setCrestCount(const Arguments& args)
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::setRingWidth(const Arguments& args)
+void ViewProxy::setRingWidth(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "setRingWidth()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -439,16 +490,24 @@ Handle<Value> ViewProxy::setRingWidth(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'setRingWidth' with signature '(F)V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	if (args.Length() < 1) {
 		char errorStringBuffer[100];
 		sprintf(errorStringBuffer, "setRingWidth: Invalid number of arguments. Expected 1 but got %d", args.Length());
-		return ThrowException(Exception::Error(String::New(errorStringBuffer)));
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
 	}
 
 	jvalue jArguments[1];
@@ -457,16 +516,18 @@ Handle<Value> ViewProxy::setRingWidth(const Arguments& args)
 
 
 	
-	
-		if ((titanium::V8Util::isNaN(args[0]) && !args[0]->IsUndefined()) || args[0]->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, args[0]) && !args[0]->IsUndefined()) || args[0]->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
-			return titanium::JSException::Error(error);
+			titanium::JSException::Error(isolate, error);
+			return;
 		}
 	if (!args[0]->IsNull()) {
-		Local<Number> arg_0 = args[0]->ToNumber();
+		Local<Number> arg_0 = args[0]->ToNumber(isolate);
 		jArguments[0].f =
-			titanium::TypeConverter::jsNumberToJavaFloat(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaFloat(
+				env, arg_0);
 	} else {
 		jArguments[0].f = NULL;
 	}
@@ -474,31 +535,31 @@ Handle<Value> ViewProxy::setRingWidth(const Arguments& args)
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::setProgress(const Arguments& args)
+void ViewProxy::setProgress(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "setProgress()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -506,16 +567,24 @@ Handle<Value> ViewProxy::setProgress(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'setProgress' with signature '(I)V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	if (args.Length() < 1) {
 		char errorStringBuffer[100];
 		sprintf(errorStringBuffer, "setProgress: Invalid number of arguments. Expected 1 but got %d", args.Length());
-		return ThrowException(Exception::Error(String::New(errorStringBuffer)));
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
 	}
 
 	jvalue jArguments[1];
@@ -524,16 +593,18 @@ Handle<Value> ViewProxy::setProgress(const Arguments& args)
 
 
 	
-	
-		if ((titanium::V8Util::isNaN(args[0]) && !args[0]->IsUndefined()) || args[0]->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, args[0]) && !args[0]->IsUndefined()) || args[0]->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
-			return titanium::JSException::Error(error);
+			titanium::JSException::Error(isolate, error);
+			return;
 		}
 	if (!args[0]->IsNull()) {
-		Local<Number> arg_0 = args[0]->ToNumber();
+		Local<Number> arg_0 = args[0]->ToNumber(isolate);
 		jArguments[0].i =
-			titanium::TypeConverter::jsNumberToJavaInt(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaInt(
+				env, arg_0);
 	} else {
 		jArguments[0].i = NULL;
 	}
@@ -541,31 +612,31 @@ Handle<Value> ViewProxy::setProgress(const Arguments& args)
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::setWaterAlpha(const Arguments& args)
+void ViewProxy::setWaterAlpha(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "setWaterAlpha()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -573,16 +644,24 @@ Handle<Value> ViewProxy::setWaterAlpha(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'setWaterAlpha' with signature '(F)V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	if (args.Length() < 1) {
 		char errorStringBuffer[100];
 		sprintf(errorStringBuffer, "setWaterAlpha: Invalid number of arguments. Expected 1 but got %d", args.Length());
-		return ThrowException(Exception::Error(String::New(errorStringBuffer)));
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
 	}
 
 	jvalue jArguments[1];
@@ -591,16 +670,18 @@ Handle<Value> ViewProxy::setWaterAlpha(const Arguments& args)
 
 
 	
-	
-		if ((titanium::V8Util::isNaN(args[0]) && !args[0]->IsUndefined()) || args[0]->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, args[0]) && !args[0]->IsUndefined()) || args[0]->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
-			return titanium::JSException::Error(error);
+			titanium::JSException::Error(isolate, error);
+			return;
 		}
 	if (!args[0]->IsNull()) {
-		Local<Number> arg_0 = args[0]->ToNumber();
+		Local<Number> arg_0 = args[0]->ToNumber(isolate);
 		jArguments[0].f =
-			titanium::TypeConverter::jsNumberToJavaFloat(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaFloat(
+				env, arg_0);
 	} else {
 		jArguments[0].f = NULL;
 	}
@@ -608,31 +689,31 @@ Handle<Value> ViewProxy::setWaterAlpha(const Arguments& args)
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
-Handle<Value> ViewProxy::setWaveSpeed(const Arguments& args)
+void ViewProxy::setWaveSpeed(const FunctionCallbackInfo<Value>& args)
 {
 	LOGD(TAG, "setWaveSpeed()");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
-		return titanium::JSException::GetJNIEnvironmentError();
+		titanium::JSException::GetJNIEnvironmentError(isolate);
+		return;
 	}
 	static jmethodID methodID = NULL;
 	if (!methodID) {
@@ -640,16 +721,24 @@ Handle<Value> ViewProxy::setWaveSpeed(const Arguments& args)
 		if (!methodID) {
 			const char *error = "Couldn't find proxy method 'setWaveSpeed' with signature '(F)V'";
 			LOGE(TAG, error);
-				return titanium::JSException::Error(error);
+				titanium::JSException::Error(isolate, error);
+				return;
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(args.Holder());
+	Local<Object> holder = args.Holder();
+	// If holder isn't the JavaObject wrapper we expect, look up the prototype chain
+	if (!JavaObject::isJavaObject(holder)) {
+		holder = holder->FindInstanceInPrototypeChain(getProxyTemplate(isolate));
+	}
+
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(holder);
 
 	if (args.Length() < 1) {
 		char errorStringBuffer[100];
 		sprintf(errorStringBuffer, "setWaveSpeed: Invalid number of arguments. Expected 1 but got %d", args.Length());
-		return ThrowException(Exception::Error(String::New(errorStringBuffer)));
+		titanium::JSException::Error(isolate, errorStringBuffer);
+		return;
 	}
 
 	jvalue jArguments[1];
@@ -658,16 +747,18 @@ Handle<Value> ViewProxy::setWaveSpeed(const Arguments& args)
 
 
 	
-	
-		if ((titanium::V8Util::isNaN(args[0]) && !args[0]->IsUndefined()) || args[0]->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, args[0]) && !args[0]->IsUndefined()) || args[0]->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
-			return titanium::JSException::Error(error);
+			titanium::JSException::Error(isolate, error);
+			return;
 		}
 	if (!args[0]->IsNull()) {
-		Local<Number> arg_0 = args[0]->ToNumber();
+		Local<Number> arg_0 = args[0]->ToNumber(isolate);
 		jArguments[0].f =
-			titanium::TypeConverter::jsNumberToJavaFloat(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaFloat(
+				env, arg_0);
 	} else {
 		jArguments[0].f = NULL;
 	}
@@ -675,31 +766,29 @@ Handle<Value> ViewProxy::setWaveSpeed(const Arguments& args)
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	return v8::Undefined();
+	args.GetReturnValue().Set(v8::Undefined(isolate));
 
 }
 
 // Dynamic property accessors -------------------------------------------------
 
 
-void ViewProxy::setter_progress(Local<String> property, Local<Value> value, const AccessorInfo& info)
+void ViewProxy::setter_progress(Local<Name> property, Local<Value> value, const PropertyCallbackInfo<void>& args)
 {
-	LOGD(TAG, "set progress");
-	HandleScope scope;
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
 
 	JNIEnv *env = titanium::JNIScope::getEnv();
 	if (!env) {
@@ -716,7 +805,7 @@ void ViewProxy::setter_progress(Local<String> property, Local<Value> value, cons
 		}
 	}
 
-	titanium::Proxy* proxy = titanium::Proxy::unwrap(info.Holder());
+	titanium::Proxy* proxy = NativeObject::Unwrap<titanium::Proxy>(args.Holder());
 	if (!proxy) {
 		return;
 	}
@@ -724,15 +813,16 @@ void ViewProxy::setter_progress(Local<String> property, Local<Value> value, cons
 	jvalue jArguments[1];
 
 	
-	
-		if ((titanium::V8Util::isNaN(value) && !value->IsUndefined()) || value->ToString()->Length() == 0) {
+
+		if ((titanium::V8Util::isNaN(isolate, value) && !value->IsUndefined()) || value->ToString(isolate)->Length() == 0) {
 			const char *error = "Invalid value, expected type Number.";
 			LOGE(TAG, error);
 		}
 	if (!value->IsNull()) {
-		Local<Number> arg_0 = value->ToNumber();
+		Local<Number> arg_0 = value->ToNumber(isolate);
 		jArguments[0].i =
-			titanium::TypeConverter::jsNumberToJavaInt(env, arg_0);
+			titanium::TypeConverter::jsNumberToJavaInt(
+				env, arg_0);
 	} else {
 		jArguments[0].i = NULL;
 	}
@@ -740,25 +830,23 @@ void ViewProxy::setter_progress(Local<String> property, Local<Value> value, cons
 	jobject javaProxy = proxy->getJavaObject();
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
-	if (!JavaObject::useGlobalRefs) {
-		env->DeleteLocalRef(javaProxy);
-	}
+	proxy->unreferenceJavaObject(javaProxy);
 
 
 
 	if (env->ExceptionCheck()) {
-		titanium::JSException::fromJavaException();
+		titanium::JSException::fromJavaException(isolate);
 		env->ExceptionClear();
 	}
 
 
 
 
-	Proxy::setProperty(property, value, info);
+	Proxy::setProperty(property, value, args);
 }
 
 
 
-			} // namespace waterwaveprogress
-		} // waterwaveprogress
-		} // ti
+	} // namespace waterwaveprogress
+} // waterwaveprogress
+} // ti
