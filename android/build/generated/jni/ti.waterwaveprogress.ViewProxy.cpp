@@ -152,6 +152,10 @@ void ViewProxy::hideRing(const FunctionCallbackInfo<Value>& args)
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -202,6 +206,10 @@ void ViewProxy::showRing(const FunctionCallbackInfo<Value>& args)
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -279,6 +287,10 @@ void ViewProxy::setAmplitude(const FunctionCallbackInfo<Value>& args)
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -329,6 +341,10 @@ void ViewProxy::hideNumerical(const FunctionCallbackInfo<Value>& args)
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -379,6 +395,10 @@ void ViewProxy::showNumerical(const FunctionCallbackInfo<Value>& args)
 	jvalue* jArguments = 0;
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -456,6 +476,10 @@ void ViewProxy::setCrestCount(const FunctionCallbackInfo<Value>& args)
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -533,6 +557,10 @@ void ViewProxy::setRingWidth(const FunctionCallbackInfo<Value>& args)
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -610,6 +638,10 @@ void ViewProxy::setProgress(const FunctionCallbackInfo<Value>& args)
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -687,6 +719,10 @@ void ViewProxy::setWaterAlpha(const FunctionCallbackInfo<Value>& args)
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -764,6 +800,10 @@ void ViewProxy::setWaveSpeed(const FunctionCallbackInfo<Value>& args)
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		args.GetReturnValue().Set(v8::Undefined(isolate));
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);
@@ -828,6 +868,9 @@ void ViewProxy::setter_progress(Local<Name> property, Local<Value> value, const 
 	}
 
 	jobject javaProxy = proxy->getJavaObject();
+	if (javaProxy == NULL) {
+		return;
+	}
 	env->CallVoidMethodA(javaProxy, methodID, jArguments);
 
 	proxy->unreferenceJavaObject(javaProxy);

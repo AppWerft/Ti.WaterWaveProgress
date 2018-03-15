@@ -1,187 +1,190 @@
-/Users/fuerst/Documents/APPC_WORKSPACE/Ti.Waterwaveprogress/android/build/generated/obj/local/armeabi-v7a/objs/ti.waterwaveprogress/__/WaterwaveprogressBootstrap.o: \
- jni/../WaterwaveprogressBootstrap.cpp \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/v8.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/stdint.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/stdio.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/wchar.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/wctype.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/xlocale.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/memory \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__config \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/type_traits \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstddef \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/typeinfo \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/exception \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstdint \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/new \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/utility \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__tuple \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/limits \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/iterator \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__functional_base \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/iosfwd \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/initializer_list \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/tuple \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstring \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/string.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cassert \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/atomic \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/vector \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__bit_reference \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/algorithm \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/climits \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/stdexcept \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__split_buffer \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/v8-version.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/v8config.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/AndroidUtil.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/stdlib.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/JNIUtil.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/AndroidUtil.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/JSException.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/KrollBindings.h \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/map \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__tree \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/functional \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/string \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstdio \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cwchar \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cwctype \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cctype \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/ctype.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/V8Util.h \
- jni/../BootstrapJS.cpp jni/../KrollGeneratedBindings.cpp \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/unordered_map \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__hash_table \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cmath \
- /Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/math.h \
- jni/ti.waterwaveprogress.WaterwaveprogressModule.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/Proxy.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/JavaObject.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/EventEmitter.h \
- /Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/NativeObject.h \
- jni/ti.waterwaveprogress.ViewProxy.h
+/Users/carloshenriquezinato/Documents/Dev/7.0modules/Forks/Mine/Waterwave-tisdk7/android/build/generated/obj/local/armeabi-v7a/objs/ti.waterwaveprogress/__/WaterwaveprogressBootstrap.o: \
+  jni/../WaterwaveprogressBootstrap.cpp \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/v8.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stddef.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stdio.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/memory \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/type_traits \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstddef \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/typeinfo \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/exception \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstdlib \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stdlib.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstdint \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/new \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/utility \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__tuple \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/initializer_list \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstring \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/string.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__debug \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/limits \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/iterator \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/iosfwd \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/wchar.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__functional_base \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/tuple \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stdexcept \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cassert \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/atomic \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/vector \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__bit_reference \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/algorithm \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/climits \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__split_buffer \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/v8-version.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/v8config.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/AndroidUtil.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/JNIUtil.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/JSException.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/KrollBindings.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/map \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__tree \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/functional \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/string \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/string_view \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__string \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstdio \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cwchar \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cwctype \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cctype \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/ctype.h \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/wctype.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/V8Util.h \
+  jni/../BootstrapJS.cpp jni/../KrollGeneratedBindings.cpp \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/unordered_map \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__hash_table \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cmath \
+  /Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/math.h \
+  jni/ti.waterwaveprogress.WaterwaveprogressModule.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/Proxy.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/JavaObject.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/EventEmitter.h \
+  /Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/NativeObject.h \
+  jni/ti.waterwaveprogress.ViewProxy.h
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/v8.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/v8.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/stdint.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stddef.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/stdio.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stdio.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/wchar.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/memory:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/wctype.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/type_traits:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/xlocale.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstddef:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/memory:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/typeinfo:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__config:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/exception:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/type_traits:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstdlib:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstddef:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stdlib.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/typeinfo:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstdint:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/exception:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/new:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstdint:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/utility:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/new:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__tuple:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/utility:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/initializer_list:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__tuple:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstring:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/limits:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/string.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/iterator:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__debug:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__functional_base:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/limits:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/iosfwd:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/iterator:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/initializer_list:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/iosfwd:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/tuple:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/wchar.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstring:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__functional_base:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/string.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/tuple:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cassert:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/stdexcept:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/atomic:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cassert:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/vector:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/atomic:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__bit_reference:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/vector:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/algorithm:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__bit_reference:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/climits:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/algorithm:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/stdexcept:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/climits:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__split_buffer:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__split_buffer:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/v8-version.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/v8-version.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/v8config.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/v8config.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/AndroidUtil.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/AndroidUtil.h:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/stdlib.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/JNIUtil.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/JNIUtil.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/JSException.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/AndroidUtil.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/KrollBindings.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/JSException.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/map:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/KrollBindings.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__tree:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/map:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/functional:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__tree:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/string:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/functional:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/string_view:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/string:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__string:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cstdio:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cstdio:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cwchar:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cwchar:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cwctype:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cwctype:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cctype:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cctype:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/ctype.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/ctype.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/V8Util.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/wctype.h:
+
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/V8Util.h:
 
 jni/../BootstrapJS.cpp:
 
 jni/../KrollGeneratedBindings.cpp:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/unordered_map:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/unordered_map:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/__hash_table:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/__hash_table:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/libcxx/include/cmath:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/cmath:
 
-/Users/fuerst/Library/Android/ndk/sources/cxx-stl/llvm-libc++/../../android/support/include/math.h:
+/Users/carloshenriquezinato/android-ndk-r16b/sources/cxx-stl/llvm-libc++/include/math.h:
 
 jni/ti.waterwaveprogress.WaterwaveprogressModule.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/Proxy.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/Proxy.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/JavaObject.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/JavaObject.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/EventEmitter.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/EventEmitter.h:
 
-/Library/Application\ Support/Titanium/mobilesdk/osx/7.0.1.GA/android/native/include/NativeObject.h:
+/Users/carloshenriquezinato/Library/Application\ Support/Titanium/mobilesdk/osx/7.1.0.RC/android/native/include/NativeObject.h:
 
 jni/ti.waterwaveprogress.ViewProxy.h:
