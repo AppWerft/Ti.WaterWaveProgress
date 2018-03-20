@@ -43,7 +43,7 @@ public class ViewProxy extends TiViewProxy {
 	private int mRingColor, mRingBgColor, mWaterColor, mWaterBgColor,
 			mFontSize, mTextColor;
 	float mCrestCount = 1.5f;
-	int mProgress = 10, mMaxProgress = 100;
+	int mProgress = 0, mMaxProgress = 100;
 	private float mRingWidth, mRing2WaterWidth;
 	private boolean mShowNumerical = true, mShowRing = true;
 	private int mWaveFactor = 0;
@@ -72,7 +72,7 @@ public class ViewProxy extends TiViewProxy {
 	@Override
 	public void handleCreationDict(KrollDict options) {
 		super.handleCreationDict(options);
-		Log.d(LCAT, "start ViewProxy::handleCreationDict");
+		//Log.d(LCAT, "start ViewProxy::handleCreationDict");
 		if (options.containsKeyAndNotNull("progress")) {
 			mProgress = TiConvert.toInt(options, "progress");
 		}
@@ -124,7 +124,7 @@ public class ViewProxy extends TiViewProxy {
 		if (options.containsKeyAndNotNull("autoWave")) {
 			autoWave = TiConvert.toBoolean(options, "autoWave");
 		}
-		Log.d(LCAT, "ViewProxy::handleCreationDict finished ");
+		//Log.d(LCAT, "ViewProxy::handleCreationDict finished ");
 	}
 
 	/*
@@ -140,7 +140,7 @@ public class ViewProxy extends TiViewProxy {
 			super(proxy);
 			Context context = TiApplication.getInstance()
 					.getApplicationContext();
-			Log.d(LCAT, "progressView started");
+			//Log.d(LCAT, "progressView started");
 			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
 					LayoutParams.WRAP_CONTENT);
 			LinearLayout container = new LinearLayout(proxy.getActivity());
@@ -167,7 +167,7 @@ public class ViewProxy extends TiViewProxy {
 			mWaterWaveProgressView.setWaveFactor(mWaveFactor);
 			mWaterWaveProgressView.setWaveSpeed(mWaveSpeed);
 			mWaterWaveProgressView.setWaterAlpha(mWaterAlpha);
-			Log.d(LCAT, "All attributes for View are set");
+			//Log.d(LCAT, "All attributes for View are set");
 			mWaterWaveProgressView.initView(context);
 			container.addView(mWaterWaveProgressView);
 			setNativeView(container);
@@ -183,7 +183,7 @@ public class ViewProxy extends TiViewProxy {
 		 */
 		@Override
 		public void processProperties(KrollDict d) {
-			Log.d(LCAT, "processProperties triggered");
+			//Log.d(LCAT, "processProperties triggered");
 			super.processProperties(d);
 		}
 	}

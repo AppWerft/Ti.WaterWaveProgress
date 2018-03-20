@@ -20,7 +20,7 @@ import org.appcelerator.kroll.common.Log;
 
 /**
  * @author Administrator
- * 
+ *
  */
 public class WaterWaveProgress extends View {
 
@@ -35,7 +35,7 @@ public class WaterWaveProgress extends View {
 	// 进度 //浪峰个数
 	float crestCount = 1.5f;
 
-	int mProgress = 10, mMaxProgress = 100;
+	int mProgress = 0, mMaxProgress = 100;
 
 	// Canvas center
 	private Point mCenterPoint;
@@ -78,11 +78,11 @@ public class WaterWaveProgress extends View {
 	public WaterWaveProgress(Context context) {
 		super(context);
 		mCenterPoint = new Point();
-		
+
 	}
 
 	public void initView(Context context) {
-		
+
 			// 如果手机版本在4.0以上,则开启硬件加速
 		if (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
 			setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -120,14 +120,13 @@ public class WaterWaveProgress extends View {
 	@SuppressLint({ "DrawAllocation", "NewApi" })
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		Log.d(LCAT, "========================≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠");
+		//Log.d(LCAT, "========================≠≠≠≠≠≠≠≠≠≠≠≠≠≠≠");
 		// Get the entire View (container) width, height
 		int width = getWidth();
 		int height = getHeight();
 		width = height = (width < height) ? width : height;
 		mAmplitude = width / 20f;
-		Log.d(LCAT, "width height amp " + width + "   " + height + "  "
-				+ mAmplitude);
+		//Log.d(LCAT, "width height amp " + width + "   " + height + "  " + mAmplitude);
 		mCenterPoint.x = width / 2;
 		mCenterPoint.y = height / 2;
 		{ // Reset the progress bar width and distance between the waves and the
@@ -143,8 +142,8 @@ public class WaterWaveProgress extends View {
 				setLayerType(View.LAYER_TYPE_HARDWARE, null);
 			}
 		}
-		Log.d(LCAT, " mFontSize=" + mFontSize);
-		Log.d(LCAT, "");
+		//Log.d(LCAT, " mFontSize=" + mFontSize);
+		//Log.d(LCAT, "");
 
 		RectF oval = new RectF();
 		oval.left = mRingWidth / 2;
@@ -167,7 +166,7 @@ public class WaterWaveProgress extends View {
 		if ((width == 0) || (height == 0) || isInEditMode()) {
 			canvas.drawCircle(mCenterPoint.x, mCenterPoint.y, width / 2
 					- mRing2WaterWidth - mRingWidth, mPaintWater);
-			Log.d(LCAT, "no animation");
+			//Log.d(LCAT, "no animation");
 			return;
 		}
 
@@ -252,7 +251,7 @@ public class WaterWaveProgress extends View {
 			String progressTxt = String.format("%.0f", (mProgress * 1f)
 					/ mMaxProgress * 100f)
 					+ "%";
-			Log.d(LCAT, "progressTxt=" + progressTxt);
+			//Log.d(LCAT, "progressTxt=" + progressTxt);
 			float mTxtWidth = mTextPaint.measureText(progressTxt, 0,
 					progressTxt.length());
 			canvas.drawText(progressTxt, mCenterPoint.x - mTxtWidth / 2,
