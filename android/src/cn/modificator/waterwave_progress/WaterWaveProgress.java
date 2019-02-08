@@ -10,7 +10,6 @@ import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.graphics.Path.Direction;
-import android.graphics.Region.Op;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Build.VERSION;
@@ -208,7 +207,11 @@ public class WaterWaveProgress extends View {
 					Direction.CCW);
 		}
 		// canvas Add restrictions, so the next drawing in the park
-		canvas.clipPath(mPath, Op.REPLACE);
+		// canvas.clipPath(mPath, Op.DIFFERENCE); //commented out since Op.DIFFERENCE is deprecated when targeting API 28
+		canvas.save();
+		canvas.clipPath(mPath);
+		canvas.restore();
+		// canvas.restore();
 		Paint bgPaint = new Paint();
 		bgPaint.setColor(mWaterBgColor);
 		// Draw background
