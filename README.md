@@ -3,7 +3,7 @@ Ti.WaterWaveProgress
 
 This is a Titanium module that exposes the library of [Modificator](https://github.com/Modificator/water-wave-progress).com
 
-![](https://i.imgur.com/UNoOYg4.gif)
+<img src="https://i.imgur.com/UNoOYg4.gif" width=240 />
 
 Usage
 =====
